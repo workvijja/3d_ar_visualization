@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body class="py-5 px-3">
+    <div class="container rounded shadow p-3 p-sm-5 d-grid gap-4">
+        <div>
+            <h1 class="text-center">Upload</h1>
+            <p class="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+        <form action="" class="d-grid gap-5">
+            <div id="3d-object" class="d-grid gap-4">
+                <h4 class="m-0">3D Object</h4>
+                <div id="3d-object-container" class="d-grid gap-3">
+                    <div>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="example">
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 gy-2">
+                        <div class="col">
+                            <label for="3d-object-thumbnail" class="form-label">Thumbnail</label>
+                            <input class="form-control" type="file" id="3d-object-thumbnail">
+                        </div>
+                        <div class="col">
+                            <label for="3d-object-file" class="form-label">File</label>
+                            <input class="form-control" type="file" id="3d-object-file">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="textures" class="d-grid gap-4">
+                <div class="d-inline-flex justify-content-between align-items-center">
+                    <h4 class="m-0">Textures</h4>
+                    <button type="button" class="btn btn-outline-primary" id="btn-add-row">Add Texture Field</button>
+                </div>
+                <div id="texture-container" class="d-grid gap-3">
+                    <h6 class="m-0">Texture 1</h6>
+                    <div>
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="example">
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 gy-2">
+                        <div class="col">
+                            <label for="texture-thumbnail" class="form-label">Thumbnail</label>
+                            <input class="form-control" type="file" id="texture-thumbnail">
+                        </div>
+                        <div class="col">
+                            <label for="texture-file" class="form-label">File</label>
+                            <input class="form-control" type="file" id="texture-file">
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+    <script type="module" src="./button_event.js"></script>
+</body>
+
+</html>
