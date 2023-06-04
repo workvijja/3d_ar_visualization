@@ -22,16 +22,16 @@
                 <div id="3d-object-container" class="d-grid gap-3">
                     <div>
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="example">
+                        <input type="text" class="form-control" id="name" placeholder="example" required>
                     </div>
                     <div class="row row-cols-1 row-cols-sm-2 gy-2">
                         <div class="col">
                             <label for="3d-object-thumbnail" class="form-label">Thumbnail</label>
-                            <input class="form-control" type="file" id="3d-object-thumbnail">
+                            <input class="form-control" type="file" id="3d-object-thumbnail" accept="image/jpg, image/jpeg, image/png" required>
                         </div>
                         <div class="col">
                             <label for="3d-object-file" class="form-label">File</label>
-                            <input class="form-control" type="file" id="3d-object-file">
+                            <input class="form-control" type="file" id="3d-object-file" accept=".gltf" required>
                         </div>
                     </div>
                 </div>
@@ -41,20 +41,21 @@
                     <h4 class="m-0">Textures</h4>
                     <button type="button" class="btn btn-outline-primary" id="btn-add-row">Add Texture Field</button>
                 </div>
-                <div id="texture-container" class="d-grid gap-3">
+                <div id="texture-container" class="texture-container d-grid gap-3">
                     <h6 class="m-0">Texture 1</h6>
                     <div>
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="example">
+                        <input type="text" class="texture-name form-control" id="name" placeholder="example" required>
                     </div>
                     <div class="row row-cols-1 row-cols-sm-2 gy-2">
                         <div class="col">
                             <label for="texture-thumbnail" class="form-label">Thumbnail</label>
-                            <input class="form-control" type="file" id="texture-thumbnail">
+                            <input class="texture-thumbnail form-control" type="file" id="texture-thumbnail" required>
                         </div>
                         <div class="col">
                             <label for="texture-file" class="form-label">File</label>
-                            <input class="form-control" type="file" id="texture-file">
+                            <input class="texture-file form-control" type="file" id="texture-file" required> 
+                            <!-- ganti jadi class -->
                         </div>
                     </div>                    
                 </div>
@@ -63,6 +64,7 @@
         </form>
     </div>
     <script type="module" src="./button_event.js"></script>
+    <script type="module" src="./upload.js"></script>
 </body>
 
 </html>

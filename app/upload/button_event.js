@@ -11,23 +11,23 @@ const add_row = () => {
     counter++
 
     const temp_container = $.parseHTML(`
-        <div id="texture-container-${counter}" class="d-grid gap-3">
+        <div id="texture-container-${counter}" class="texture-container d-grid gap-3">
             <h6 class="m-0">Texture ${counter}</h6>
             <div>
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="example">
+                <input type="text" class="texture-name form-control" id="name" placeholder="example" required>
             </div>
             <div class="row row-cols-1 row-cols-sm-2 gy-2">
                 <div class="col">
                     <label for="texture-thumbnail-${counter}" class="form-label">Thumbnail</label>
-                    <input class="form-control" type="file" id="texture-thumbnail-${counter}">
+                    <input class="texture-thumbnail form-control" type="file" id="texture-thumbnail-${counter}" required>
                 </div>
                 <div class="col">
                     <label for="texture-file-${counter}" class="form-label">File</label>
-                    <input class="form-control" type="file" id="texture-file-${counter}">
+                    <input class="texture-file form-control" type="file" id="texture-file-${counter}" required>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex justify-content-end mt-3">
                 <button type="button" class="btn btn-outline-danger" id="btn-delete-${counter}">Delete Field</button>
             </div>
         </div>
