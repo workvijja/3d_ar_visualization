@@ -1,0 +1,98 @@
+<div class="py-5 px-3">
+    <div class="container rounded-3 shadow p-3 p-sm-5 d-grid gap-4">
+        <div>
+            <h1 class="text-center fw-bold">Upload</h1>
+            <p class="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        </div>
+        <form class="d-grid gap-5">
+            <div id="3d-object" class="d-grid gap-4">
+                <h4 class="m-0">3D Object</h4>
+                <div id="3d-object-container" class="d-grid gap-3">
+                    <div>
+                        <label for="3d-object-name" class="form-label">Name</label>
+                        <input id="3d-object-name" name="name" type="text" class="form-control" placeholder="Object">
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 gy-2">
+                        <div class="col">
+                            <label for="3d-object-thumbnail" class="form-label">Thumbnail</label>
+                            <input id="3d-object-thumbnail" name="thumbnail" class="form-control" type="file"
+                                accept="image/jpg, image/jpeg, image/png">
+                        </div>
+                        <div class="col">
+                            <label for="3d-object-file" class="form-label">File</label>
+                            <input id="3d-object-file" name="file" class="form-control" type="file" accept=".gltf">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="textures" class="d-grid gap-4">
+                <div class="d-inline-flex justify-content-between align-items-center">
+                    <h4 class="m-0">Textures</h4>
+                    <button type="button" class="btn btn-outline-primary" id="btn-add-row">Add Texture Field</button>
+                </div>
+                <div id="texture-container" class="texture-container d-grid gap-3">
+                    <h6 class="m-0">Texture 1</h6>
+                    <div>
+                        <label for="texture-name" class="form-label">Name</label>
+                        <input id="texture-name" name="name" type="text" class="form-control" placeholder="Texture 1">
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 gy-2">
+                        <div class="col">
+                            <label for="texture-thumbnail" class="form-label">Thumbnail</label>
+                            <input id="texture-thumbnail" name="thumbnail" class="form-control" type="file"
+                                accept="image/jpg, image/jpeg, image/png">
+                        </div>
+                        <div class="col">
+                            <label for="texture-file" class="form-label">File</label>
+                            <input id="texture-file" name="file" class="form-control" type="file"
+                                accept="image/jpg, image/jpeg, image/png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-submit" type="submit" class="btn btn-primary">
+                <span id="btn-submit-text">Upload</span>
+                <span class="spinner-border spinner-border-sm ms-2" style="display: none" role="status" aria-hidden="true"></span>
+            </button>
+        </form>
+    </div>
+    <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Upload Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column px-4 py-3">
+                        <h2 class="text-center fw-bold mb-4">Copy link or download QR</h2>
+                            <!-- <input type="text" readonly class="form-control-plaintext" id="link-input"
+                                value="email@example.com"> -->
+                            <div class="input-group mb-4">
+                                <!-- <input type="text" class="form-control" placeholder="Recipient's username"
+                                    aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
+                                <input type="text" readonly class="form-control" id="link-input"
+                                    value="email@example.com">
+                                <div class="input-group-append">
+                                    <!-- <i class="bi bi-clipboard-check"></i> -->
+                                    <button id="btn-copy-link" class="btn btn-outline-secondary" type="button"><i class="bi bi-clipboard"></i></button>
+                                </div>
+                            </div>
+                            <div class="p-4 border rounded-2 mb-4">
+                                <img class="w-100" src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"
+                                alt="" srcset="">
+                            </div>
+                            <button id="btn-download-img" type="button" class="btn btn-primary">Download QR</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../../app/upload/button_event.js"></script>
+    <script type="module" src="../../app/upload/upload.js"></script>
+</div>

@@ -9,7 +9,8 @@ export default defineConfig({
     //         }
     //     }
     // },
-    server: {
-        open: '/app/upload/index.html'
-    }
+    // server: {
+    //     // open: './server.js'
+    //     open: '/app/upload/index.html'
+    // }
 })
