@@ -53,29 +53,40 @@ const generate_link = () => {
     `
 }
 
-const get_data = (container) => {
-    const obj = {}
+const init_data = () => {
+    const d = $.Deferred()
 
-    const name = container.find("input[name='name']")
-    const name_val = name.val()
-    if (!name_val) return false
-    else obj.name = name_val
+    const payload = new FormData()
 
-    const thumbnail = container.find("input[name='thumbnail']")
-    const thumbnail_val = thumbnail.prop("files")[0]
-    if (!thumbnail_val) return false
-    else obj.thumbnail = thumbnail_val
+    const section = form.children("div")
+    section.each(function (i) {
+        const item = $(this)
+        const item_id = item.attr("id")
+        const containers = item.find("div[id|='" + item_id + "']")
+        const index = i
+        containers.each(function (i) {
+            const container = $(this)
+            const inputs = container.find("input[id|='" + item_id + "']")
+            inputs.each(function (i) {
+                const input = $(this)
+                const input_name = input.attr("id").split("-").pop()
+                let input_value = (input.attr("type") === "file") ? input.prop("files")[0] : input.val();
+                if (!input_value) {
+                    d.reject(["Please fill", item_id, input_name, "field"].join(" "))
+                    return false
+                }
+                payload.append([index, item_id, input_name].join("_"), input_value)
+            })
+            if (d.state() === "rejected") return false
+        })
+        if (d.state() === "rejected") return false
+    })
+    if (d.state() === "pending") d.resolve(payload)
 
-    const file = container.find("input[name='file']")
-    const file_val = file.prop("files")[0]
-    if (!file_val) return false
-    else obj.file = file_val
-
-    return obj
+    return d.promise()
 }
 
 const post = (payload) => {
-    console.log(payload)
     $.ajax({
         url: "/upload",
         type: "POST",
@@ -102,40 +113,15 @@ const upload = (e) => {
     e.preventDefault()
     btn_upload_process()
 
-    const payload = new FormData()
-    // tambahin store
-
-    const obj_container = form.find("#3d-object-container")
-    const obj = get_data(obj_container)
-    // TODO ambil description
-    if (!obj) {
-        show_error("Please input all field in 3D Object")
-        btn_upload_reset()
-        return false
-    }
-    $.each(obj, function (key, value) {
-        payload.append("object_" + key, value)
-    })
-
-    const textures = form.find(".texture-container")
-    let txt_valid = true
-    textures.each(function (i) {
-        const txt_container = $(this)
-        const txt = get_data(txt_container)
-        if (!txt) {
-            txt_valid = false
-            return false
+    // init_data()
+    init_data().then(
+        (data) => {
+            console.log(...data)
+        },
+        (err) => {
+            show_error(err)
+            btn_upload_reset()
         }
-        $.each(txt, function (key, value) {
-            payload.append(["textures", i, key].join("_"), value)
-        })
-    })
-    if (!txt_valid) {
-        show_error("Please input all field in Textures")
-        btn_upload_reset()
-        return false
-    }
-
-    post(payload)
+    )
 }
 form.on("submit", upload)

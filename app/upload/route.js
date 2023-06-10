@@ -175,6 +175,7 @@ router.route("/")
         // res.render("upload/index")
         res.context = {
             title: "Upload",
+            script_path: "./scripts/upload",
             body_path: "./upload/index"
         }
         next()
