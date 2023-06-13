@@ -3,7 +3,6 @@ import { Modal } from "bootstrap"
 const modal = new Modal($('#modal'))
 const modal_title = $('.modal-title')
 const modal_body = $('.modal-body')
-// modal.show()
 
 const form = $("form")
 
@@ -33,7 +32,7 @@ const show_error = (message) => {
     show_modal({ title: "Error", body: message })
 }
 
-const generate_link = () => {
+const generate_link = (view_link) => {
     const content = `
         <div class="d-flex flex-column px-4 py-3">
             <h2 class="text-center fw-bold mb-4">Copy link or download QR</h2>
@@ -41,16 +40,44 @@ const generate_link = () => {
                 <input type="text" readonly class="form-control" id="link-input"
                     value="${view_link}">
                 <div class="input-group-append">
-                    <!-- <i class="bi bi-clipboard-check"></i> -->
                     <button id="btn-copy-link" class="btn btn-outline-secondary" type="button"><i class="bi bi-clipboard"></i></button>
                 </div>
             </div>
             <div class="p-4 border rounded-2 mb-4">
-                <img class="w-100" src="${image_link}">
+                <img id="qr-img" crossorigin="anonymous" class="w-100" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${view_link}">
             </div>
-            <button id="btn-download-img" type="button" class="btn btn-primary">Download QR</button>
+            <a id="btn-download-img" class="btn btn-primary">Download QR</a>
         </div>
     `
+    return content
+}
+
+const copy = () => {
+    const btn_copy_link = $("#btn-copy-link")
+    btn_copy_link.on("click", function (e) {
+        const link_input = $("#link-input")
+        navigator.clipboard.writeText(link_input.val())
+        const icon = btn_copy_link.children("i")
+        icon.removeClass("bi-clipboard")
+        icon.addClass("bi-clipboard-check")
+    })
+}
+
+const download_image = () => {
+    const btn_download_img = $("#btn-download-img")
+    btn_download_img.prop("disabled", true)
+    const img = document.getElementById("qr-img")
+    img.onload = () => {
+        const canvas = document.createElement("canvas")
+        canvas.width = 600
+        canvas.height = 600
+        const ctx = canvas.getContext("2d")
+        ctx.drawImage(img, 0, 0)
+        const dataURL = canvas.toDataURL("image/png")
+        
+        btn_download_img.prop("href", dataURL)
+        btn_download_img.prop("download", "qr-code.png")
+    }
 }
 
 const init_data = () => {
@@ -87,6 +114,7 @@ const init_data = () => {
 }
 
 const post = (payload) => {
+    const d = $.Deferred()
     $.ajax({
         url: "/upload",
         type: "POST",
@@ -95,33 +123,32 @@ const post = (payload) => {
         processData: false,
         contentType: false,
         success: function (res) {
-            if (res.success) {
-                show_modal({ title: "Success", body: res.message })
-            } else {
-                show_error(res.message)
-            }
-            btn_upload_reset()
+            d.resolve(res)
         },
-        error: function (res) {
-            show_error(res.message)
-            btn_upload_reset()
+        error: function (err) {
+            d.reject(err)
         }
     })
+    return d.promise()
 }
 
 const upload = (e) => {
     e.preventDefault()
     btn_upload_process()
 
-    // init_data()
-    init_data().then(
-        (data) => {
-            console.log(...data)
-        },
-        (err) => {
-            show_error(err)
-            btn_upload_reset()
-        }
-    )
+    init_data().then((data) => {
+        return post(data)
+    }).done((res) => {
+        $.when(show_modal({ title: res.message, body: generate_link(res.link) }))
+            .then(() => {
+                copy()
+                download_image()
+            })
+    }).catch((err) => {
+        console.log(err)
+        show_error(err.responseText || err)
+    }).always(() => {
+        btn_upload_reset()
+    })
 }
 form.on("submit", upload)
