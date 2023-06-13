@@ -90,8 +90,9 @@ const init_data = () => {
         const item = $(this)
         const item_id = item.attr("id")
         const containers = item.find("div[id|='" + item_id + "']")
-        const index = i
+        let index = i
         containers.each(function (i) {
+            index += i
             const container = $(this)
             const inputs = container.find("input[id|='" + item_id + "']")
             inputs.each(function (i) {
@@ -145,7 +146,6 @@ const upload = (e) => {
                 download_image()
             })
     }).catch((err) => {
-        console.log(err)
         show_error(err.responseText || err)
     }).always(() => {
         btn_upload_reset()

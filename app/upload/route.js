@@ -25,19 +25,22 @@ const init_data = (fields) => {
             Object.entries(data).forEach(([key, value]) => {
                 data[key] = value.filter((n) => n)
             })
-            Object.entries(data).forEach(([key, value]) => {
-                data[key].forEach((item, index) => {
+            Object.keys(data).forEach((key) => {
+                const length = data[key].length
+                for (let index = 0; index < length; index++) {
                     ["file", "thumbnail"].forEach((name) => {
-                        const container = data[key][index]
-                        if (container[name]) {
-                            container[[name, "original", "path"].join("_")] = container[name].filepath
-                            container[[name, "path"].join("_")] = join(eval(name + '_folder'), generate_file_name(container[name].originalFilename))
-                            const directories = container[[name, 'path'].join("_")].split("\\")
-                            container[[name, 'save', 'path'].join("_")] = directories.slice(directories.indexOf("public")).join("/")
+                        const file = data[key][index][name]
+                        if (file) {
+                            data[key][index][[name, "original", "path"].join("_")] = file.filepath
+                            data[key][index][[name, "path"].join("_")] = join(eval(name + '_folder'), generate_file_name(file.originalFilename))
+                            let directories = data[key][index][[name, 'path'].join("_")].split("\\")
+                            data[key][index][[name, 'save', 'path'].join("_")] = directories.slice(directories.indexOf("public")).join("/")
                         }
                     })
-                })
+                    
+                }
             })
+            
             resolve(data)
         } catch (error) {
             reject(error.message || error)
@@ -169,7 +172,7 @@ const insert = (data) => {
                 }
                 console.log(cloth_id)
 
-                await data.textures.forEach(async (t) => {
+                data.texture.forEach(async (t) => {
                     try {
                         let texture_thumbnail_id
                         const insert_texture_thumbnail = await insert_query(connection, "thumbnail", { url: t.thumbnail_save_path })
@@ -202,7 +205,7 @@ const insert = (data) => {
                 if (!move_file(data.object[0].file_original_path, data.object[0].file_path)) throw { connection: connection, message: "Failed to move cloth file" }
                 if (!move_file(data.object[0].thumbnail_original_path, data.object[0].thumbnail_path)) throw { connection: connection, message: "Failed to move cloth thumbnail file" }
 
-                data.textures.forEach((t) => {
+                data.texture.forEach((t) => {
                     try {
                         if (!move_file(t.file_original_path, t.file_path)) throw { connection: connection, message: "Failed to move texture file" }
                         if (!move_file(t.thumbnail_original_path, t.thumbnail_path)) throw { connection: connection, message: "Failed to move texture thumbnail file" }
@@ -258,7 +261,6 @@ router.route("/")
         try {
             const parsed_data = await parse_form(req)
             const data = await init_data(parsed_data)
-            // benerin insert texture. cuma ke insert 1
             const insert_message = await insert(data)
             insert_message.link = `${req.protocol}://${req.get('host')}/view/${insert_message.store_name}/${insert_message.cloth_id}`
             console.log(insert_message)
